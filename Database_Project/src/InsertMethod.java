@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 import org.w3c.dom.ranges.RangeException;
 
 public class InsertMethod {
-
+//skalfj
 	private PreparedStatement pst = null;
 	Connection con = null;
 	Statement st = null;
