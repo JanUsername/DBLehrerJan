@@ -6,57 +6,16 @@ public class LoginDB {
 
     public static void main(String[] args) {
 	
-	Connection con = null;
-	Statement st = null;
-	ResultSet rs = null;
-	ResultSetMetaData rsmd = null;
-
-	String url = "alcor.inf.unibz.it";
-	String user = "dbs_g07";
-	String password = "Gioshjuc";
-	
-	try {
-	    con = DriverManager.getConnection(url, user, password);
-	    st = con.createStatement();
-	    rs = st.executeQuery("select * from student");
-	    
-	    rsmd = rs.getMetaData();
-            int noOfCols = rsmd.getColumnCount();
-	    int i;
-
-            for(i = 1; i <= noOfCols; i++) {
-                System.out.print(rsmd.getColumnLabel(i) + "\t");
-            }
-            System.out.println();
-
-            while (rs.next()) { 
-                for(i = 1; i <= noOfCols; i++) {
-                    String a = rs.getString(i); 
-                    System.out.print(a + "\t");
-                }
-                System.out.println();
-            }
-
-	} catch (SQLException ex) {
-	    Logger lgr = Logger.getLogger(LoginDB.class.getName());
-	    lgr.log(Level.SEVERE, ex.getMessage(), ex);
-	    
-	} finally {
-	    try {
-		if (rs != null) {
-		    rs.close();
-		}
-		if (st != null) {
-		    st.close();
-		}
-		if (con != null) {
-		    con.close();
-		}
-		
-	    } catch (SQLException ex) {
-		Logger lgr = Logger.getLogger(LoginDB.class.getName());
-		lgr.log(Level.WARNING, ex.getMessage(), ex);
-	    }
-	}
+    	InsertMethod insert = new InsertMethod();
+    	String[] arr = new String[6];
+    	arr[0]="Gandalf";
+    	arr[1]="Scata";
+    	arr[2]="Sinich";
+    	arr[3]="Sascha 3";
+    	arr[4]="8959588";
+    	arr[5]="ASddf23r43qf";
+    	
+    	String tableNames[] = {"name", "surname", "location", "address", "telefonnumber", "taxnumber"};
+    	insert.insert("tbl_customer",tableNames,arr);
     }
 }
