@@ -11,7 +11,6 @@ import java.util.logging.Logger;
 import org.w3c.dom.ranges.RangeException;
 
 public class InsertMethod {
-//skalfj
 	private PreparedStatement pst = null;
 	Connection con = null;
 	Statement st = null;
@@ -51,14 +50,20 @@ public class InsertMethod {
 				questionMarkStm += ", " + "?";
 			}
 			questionMarkStm = questionMarkStm.replaceFirst(", ","");
+			
+			//create statement
 			stm = "INSERT INTO " + table + "(" + tableName
 					+ ") VALUES("+ questionMarkStm +")";
 			pst = con.prepareStatement(stm);
+			
+			//set values
 			for(int i = 0; i<value.length; i++){
 				pst.setString(i+1, value[i]);
 			}
+			
+			//execute statement me
 			pst.executeUpdate();
-			System.out.println("Successful");
+			System.out.println("Insert Successful");
 			
 		} catch (SQLException ex) {
 			Logger lgr = Logger.getLogger(InsertMethod.class.getName());

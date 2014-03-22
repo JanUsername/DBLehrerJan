@@ -38,7 +38,7 @@ public class UpdateMethod {
 
 			// execute statement me
 			pst.executeUpdate();
-			System.out.println("Successful");
+			System.out.println("Update Successful");
 
 		} catch (SQLException ex) {
 			Logger lgr = Logger.getLogger(UpdateMethod.class.getName());
