@@ -45,7 +45,6 @@ public class QueryMethod {
 					result[j - 1] = "" + rs.getString(j);
 				}
 			}
-			System.out.println("Query Successful");
 		} catch (SQLException ex) {
 			Logger lgr = Logger.getLogger(QueryMethod.class.getName());
 			lgr.log(Level.SEVERE, ex.getMessage(), ex);

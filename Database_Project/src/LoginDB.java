@@ -18,8 +18,10 @@ public class LoginDB {
     	String tableNames[] = {"name", "surname", "location", "address", "telefonnumber", "taxnumber"};
     	//insert.insert("tbl_customer",tableNames,arr);
     	UpdateMethod method = new UpdateMethod();
-    	method.update("tbl_Customer", "surname", "Brunner", "customer_ID", 7);
+    	//method.update("tbl_Customer", "surname", "Brunner", "customer_ID", 7);
     	DeleteMethod delete = new DeleteMethod();
-    	delete.delete("tbl_Customer", "customer_ID", 8);
+    	//delete.delete("tbl_Customer", "customer_ID", 8);
+    	QueryMethod query = new QueryMethod();
+    	query.query("tbl_Customer",1,"customer_ID");
     }
 }

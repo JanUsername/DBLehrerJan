@@ -63,8 +63,6 @@ public class InsertMethod {
 			
 			//execute statement me
 			pst.executeUpdate();
-			System.out.println("Insert Successful");
-			
 		} catch (SQLException ex) {
 			Logger lgr = Logger.getLogger(InsertMethod.class.getName());
 			lgr.log(Level.SEVERE, ex.getMessage(), ex);

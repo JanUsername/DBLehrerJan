@@ -37,8 +37,6 @@ public class DeleteMethod {
 
 			// execute statement me
 			pst.executeUpdate();
-			System.out.println("Delete Successful");
-
 		} catch (SQLException ex) {
 			Logger lgr = Logger.getLogger(DeleteMethod.class.getName());
 			lgr.log(Level.SEVERE, ex.getMessage(), ex);

@@ -13,6 +13,8 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class CustomerGUI extends JFrame {
 
@@ -23,8 +25,11 @@ public class CustomerGUI extends JFrame {
 	private JTextField txt_address;
 	private JTextField txt_telef;
 	private JTextField txt_tax;
+	static private String nameTBL = "tbl_customer";
 	static QueryMethod query = new QueryMethod();
 	static InsertMethod insert = new InsertMethod();
+	static DeleteMethod delete = new DeleteMethod();
+	static UpdateMethod update = new UpdateMethod();
 	static String[] result;
 	static String[] nameTxtF = { "name", "surname", "location", "address",
 			"telefonnumber", "taxnumber" };
@@ -42,9 +47,9 @@ public class CustomerGUI extends JFrame {
 				try {
 					frame = new CustomerGUI();
 					frame.setVisible(true);
-					result = query.query("tbl_Customer", 0, "customer_ID");
+					result = query.query(nameTBL, 0, "customer_ID");
 					System.out.println(currentID);
-					maxID = query.maxID("tbl_Customer", "customer_ID");
+					maxID = query.maxID(nameTBL, "customer_ID");
 					insertValues(result);
 
 				} catch (Exception e) {
@@ -103,9 +108,9 @@ public class CustomerGUI extends JFrame {
 		JButton btn_C_first = new JButton("<<");
 		btn_C_first.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				result = query.query("tbl_Customer", 0, "customer_ID");
+				result = query.query(nameTBL, 0, "customer_ID");
 				insertValues(result);
-				currentID = 1;
+				currentID = 0;
 			}
 		});
 		btn_C_first.setBounds(12, 247, 54, 25);
@@ -117,7 +122,7 @@ public class CustomerGUI extends JFrame {
 				if (currentID > 0) {
 					currentID--;
 					System.out.println(currentID);
-					result = query.query("tbl_Customer", currentID,
+					result = query.query(nameTBL, currentID,
 							"customer_ID");
 					insertValues(result);
 				}
@@ -131,7 +136,7 @@ public class CustomerGUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				currentID++;
 				if (currentID > 0 && currentID < maxID) {
-					result = query.query("tbl_Customer", currentID,
+					result = query.query(nameTBL, currentID,
 							"customer_ID");
 					insertValues(result);
 				}
@@ -144,9 +149,9 @@ public class CustomerGUI extends JFrame {
 		JButton btn_C_last = new JButton(">>");
 		btn_C_last.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				maxID = query.maxID("tbl_customer", "customer_ID");
+				maxID = query.maxID(nameTBL, "customer_ID");
 				currentID = maxID;
-				result = query.query("tbl_Customer", maxID, "customer_ID");
+				result = query.query(nameTBL, maxID, "customer_ID");
 				insertValues(result);
 			}
 		});
@@ -170,35 +175,70 @@ public class CustomerGUI extends JFrame {
 		panel.add(btn_C_new);
 
 		JButton btn_C_del = new JButton("Del");
+		btn_C_del.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				delete.delete(nameTBL, "customer_ID", currentID);
+			}
+		});
 		btn_C_del.setBounds(366, 247, 70, 25);
 		panel.add(btn_C_del);
 
 		txt_name = new JTextField();
+		txt_name.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				update.update(nameTBL, "name", txt_name.getText(), "customer_ID", currentID);
+			}
+		});
 		txt_name.setBounds(171, 39, 287, 19);
 		panel.add(txt_name);
 		txt_name.setColumns(10);
 
 		txt_surname = new JTextField();
+		txt_surname.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				update.update(nameTBL, "surname", txt_surname.getText(), "customer_ID", currentID);
+			}
+		});
 		txt_surname.setColumns(10);
 		txt_surname.setBounds(171, 70, 287, 19);
 		panel.add(txt_surname);
 
 		txt_loc = new JTextField();
+		txt_loc.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				update.update(nameTBL, "location", txt_loc.getText(), "customer_ID", currentID);
+			}
+		});
 		txt_loc.setColumns(10);
 		txt_loc.setBounds(171, 97, 287, 19);
 		panel.add(txt_loc);
 
 		txt_address = new JTextField();
+		txt_address.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				update.update(nameTBL, "address", txt_address.getText(), "customer_ID", currentID);
+			}
+		});
 		txt_address.setColumns(10);
 		txt_address.setBounds(171, 124, 287, 19);
 		panel.add(txt_address);
 
 		txt_telef = new JTextField();
+		txt_telef.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				update.update(nameTBL, "telefonnumber", txt_telef.getText(), "customer_ID", currentID);
+			}
+		});
 		txt_telef.setColumns(10);
 		txt_telef.setBounds(171, 151, 287, 19);
 		panel.add(txt_telef);
 
 		txt_tax = new JTextField();
+		txt_tax.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				update.update(nameTBL, "taxnumber", txt_tax.getText(), "customer_ID", currentID);
+			}
+		});
 		txt_tax.setColumns(10);
 		txt_tax.setBounds(171, 178, 287, 19);
 		panel.add(txt_tax);
@@ -214,8 +254,8 @@ public class CustomerGUI extends JFrame {
 				newValues[3] = "" + txt_address.getText();
 				newValues[4] = "" + txt_telef.getText();
 				newValues[5] = "" + txt_tax.getText();
-				insert.insert("tbl_Customer", nameTxtF, newValues);
-				maxID = query.maxID("tbl_Customer", "customer_ID");
+				insert.insert(nameTBL, nameTxtF, newValues);
+				maxID = query.maxID(nameTBL, "customer_ID");
 			}
 		});
 		btnSave.setBounds(296, 247, 68, 25);
