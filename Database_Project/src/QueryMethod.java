@@ -40,11 +40,11 @@ public class QueryMethod {
 			int n = rsmd.getColumnCount();
 			result = new String[n];
 			while (rs.next()) {
-
 				for (int j = 1; j <= n; j++) {
 					result[j - 1] = "" + rs.getString(j);
 				}
 			}
+
 		} catch (SQLException ex) {
 			Logger lgr = Logger.getLogger(QueryMethod.class.getName());
 			lgr.log(Level.SEVERE, ex.getMessage(), ex);
@@ -78,7 +78,7 @@ public class QueryMethod {
 			ResultSet rs = stmt.executeQuery("select * from " + table
 					+ " order by " + nameID);
 			rs.last();
-			n = rs.getRow();
+			n = rs.getInt(1);
 		} catch (SQLException ex) {
 			Logger lgr = Logger.getLogger(QueryMethod.class.getName());
 			lgr.log(Level.SEVERE, ex.getMessage(), ex);

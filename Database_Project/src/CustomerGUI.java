@@ -26,6 +26,7 @@ public class CustomerGUI extends JFrame {
 	private JTextField txt_telef;
 	private JTextField txt_tax;
 	static private String nameTBL = "tbl_customer";
+	static private String nameID = "customer_ID";
 	static QueryMethod query = new QueryMethod();
 	static InsertMethod insert = new InsertMethod();
 	static DeleteMethod delete = new DeleteMethod();
@@ -33,7 +34,7 @@ public class CustomerGUI extends JFrame {
 	static String[] result;
 	static String[] nameTxtF = { "name", "surname", "location", "address",
 			"telefonnumber", "taxnumber" };
-	static int currentID = 0;
+	static int currentID = 1;
 	static int maxID;
 	static CustomerGUI frame;
 	String[] newValues = new String[6];
@@ -47,9 +48,9 @@ public class CustomerGUI extends JFrame {
 				try {
 					frame = new CustomerGUI();
 					frame.setVisible(true);
-					result = query.query(nameTBL, 0, "customer_ID");
-					System.out.println(currentID);
-					maxID = query.maxID(nameTBL, "customer_ID");
+					result = query.query(nameTBL, 1, nameID);
+					maxID = query.maxID(nameTBL, nameID);
+					System.out.println(maxID);
 					insertValues(result);
 
 				} catch (Exception e) {
@@ -108,7 +109,7 @@ public class CustomerGUI extends JFrame {
 		JButton btn_C_first = new JButton("<<");
 		btn_C_first.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				result = query.query(nameTBL, 0, "customer_ID");
+				result = query.query(nameTBL, 0, nameID);
 				insertValues(result);
 				currentID = 0;
 			}
@@ -121,9 +122,11 @@ public class CustomerGUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (currentID > 0) {
 					currentID--;
-					System.out.println(currentID);
-					result = query.query(nameTBL, currentID,
-							"customer_ID");
+					result = query.query(nameTBL, currentID, nameID);
+					while (result[1]==null){
+						currentID--;
+						result = query.query(nameTBL, currentID, nameID);
+					}
 					insertValues(result);
 				}
 			}
@@ -136,8 +139,12 @@ public class CustomerGUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				currentID++;
 				if (currentID > 0 && currentID < maxID) {
-					result = query.query(nameTBL, currentID,
-							"customer_ID");
+					result = query.query(nameTBL, currentID, nameID);
+					System.out.println(result[1]);
+					while (result[1] == null) {
+						currentID++;
+						result = query.query(nameTBL, currentID, nameID);
+					}
 					insertValues(result);
 				}
 			}
@@ -149,9 +156,9 @@ public class CustomerGUI extends JFrame {
 		JButton btn_C_last = new JButton(">>");
 		btn_C_last.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				maxID = query.maxID(nameTBL, "customer_ID");
+				maxID = query.maxID(nameTBL, nameID);
 				currentID = maxID;
-				result = query.query(nameTBL, maxID, "customer_ID");
+				result = query.query(nameTBL, maxID, nameID);
 				insertValues(result);
 			}
 		});
@@ -177,7 +184,7 @@ public class CustomerGUI extends JFrame {
 		JButton btn_C_del = new JButton("Del");
 		btn_C_del.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				delete.delete(nameTBL, "customer_ID", currentID);
+				delete.delete(nameTBL, nameID, currentID);
 			}
 		});
 		btn_C_del.setBounds(366, 247, 70, 25);
@@ -186,7 +193,8 @@ public class CustomerGUI extends JFrame {
 		txt_name = new JTextField();
 		txt_name.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				update.update(nameTBL, "name", txt_name.getText(), "customer_ID", currentID);
+				update.update(nameTBL, "name", txt_name.getText(), nameID,
+						currentID);
 			}
 		});
 		txt_name.setBounds(171, 39, 287, 19);
@@ -196,7 +204,8 @@ public class CustomerGUI extends JFrame {
 		txt_surname = new JTextField();
 		txt_surname.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				update.update(nameTBL, "surname", txt_surname.getText(), "customer_ID", currentID);
+				update.update(nameTBL, "surname", txt_surname.getText(),
+						nameID, currentID);
 			}
 		});
 		txt_surname.setColumns(10);
@@ -206,7 +215,8 @@ public class CustomerGUI extends JFrame {
 		txt_loc = new JTextField();
 		txt_loc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				update.update(nameTBL, "location", txt_loc.getText(), "customer_ID", currentID);
+				update.update(nameTBL, "location", txt_loc.getText(), nameID,
+						currentID);
 			}
 		});
 		txt_loc.setColumns(10);
@@ -216,7 +226,8 @@ public class CustomerGUI extends JFrame {
 		txt_address = new JTextField();
 		txt_address.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				update.update(nameTBL, "address", txt_address.getText(), "customer_ID", currentID);
+				update.update(nameTBL, "address", txt_address.getText(),
+						nameID, currentID);
 			}
 		});
 		txt_address.setColumns(10);
@@ -226,7 +237,8 @@ public class CustomerGUI extends JFrame {
 		txt_telef = new JTextField();
 		txt_telef.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				update.update(nameTBL, "telefonnumber", txt_telef.getText(), "customer_ID", currentID);
+				update.update(nameTBL, "telefonnumber", txt_telef.getText(),
+						nameID, currentID);
 			}
 		});
 		txt_telef.setColumns(10);
@@ -236,7 +248,8 @@ public class CustomerGUI extends JFrame {
 		txt_tax = new JTextField();
 		txt_tax.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				update.update(nameTBL, "taxnumber", txt_tax.getText(), "customer_ID", currentID);
+				update.update(nameTBL, "taxnumber", txt_tax.getText(), nameID,
+						currentID);
 			}
 		});
 		txt_tax.setColumns(10);
@@ -255,7 +268,7 @@ public class CustomerGUI extends JFrame {
 				newValues[4] = "" + txt_telef.getText();
 				newValues[5] = "" + txt_tax.getText();
 				insert.insert(nameTBL, nameTxtF, newValues);
-				maxID = query.maxID(nameTBL, "customer_ID");
+				maxID = query.maxID(nameTBL, nameID);
 			}
 		});
 		btnSave.setBounds(296, 247, 68, 25);
