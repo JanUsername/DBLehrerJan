@@ -4,11 +4,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import java.awt.GridLayout;
-import javax.swing.JTabbedPane;
 
 
-public class DataBasGUI extends JFrame {
+public class CustomerGUI extends JFrame {
 
 	private JPanel contentPane;
 
@@ -19,7 +17,7 @@ public class DataBasGUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					DataBasGUI frame = new DataBasGUI();
+					CustomerGUI frame = new CustomerGUI();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -31,16 +29,13 @@ public class DataBasGUI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public DataBasGUI() {
+	public CustomerGUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-		contentPane.setLayout(new GridLayout(1, 0, 0, 0));
-		
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		contentPane.add(tabbedPane);
 	}
 
 }
