@@ -39,8 +39,6 @@ public class DeviceTypeGUI extends JFrame {
 				try {
 					frame = new DeviceTypeGUI();
 					frame.setVisible(true);
-					frame = new DeviceTypeGUI();
-					frame.setVisible(true);
 					result = query.query(nameTBL, 1, nameID);
 					maxID = query.maxID(nameTBL, nameID);
 					insertValues(result);
@@ -113,7 +111,7 @@ public class DeviceTypeGUI extends JFrame {
 		JButton btn_DT_back = new JButton("<");
 		btn_DT_back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (currentID > 0) {
+				if (currentID > 1) {
 					currentID--;
 					result = query.query(nameTBL, currentID, nameID);
 					while (result[1]==null){

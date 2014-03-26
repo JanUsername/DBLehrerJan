@@ -44,7 +44,6 @@ public class ProducerGUI extends JFrame {
 					frame.setVisible(true);
 					result = query.query(nameTBL, 1, nameID);
 					maxID = query.maxID(nameTBL, nameID);
-					System.out.println(maxID);
 					insertValues(result);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -120,9 +119,9 @@ public class ProducerGUI extends JFrame {
 		JButton btn_P_first = new JButton("<<");
 		btn_P_first.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				result = query.query(nameTBL, 0, nameID);
+				result = query.query(nameTBL, 1, nameID);
 				insertValues(result);
-				currentID = 0;
+				currentID = 1;
 			}
 		});
 		btn_P_first.setBounds(27, 150, 54, 25);
@@ -131,7 +130,7 @@ public class ProducerGUI extends JFrame {
 		JButton btn_P_back = new JButton("<");
 		btn_P_back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (currentID > 0) {
+				if (currentID > 1) {
 					currentID--;
 					result = query.query(nameTBL, currentID, nameID);
 					while (result[1]==null){
@@ -151,7 +150,6 @@ public class ProducerGUI extends JFrame {
 				currentID++;
 				if (currentID > 0 && currentID <= maxID) {
 					result = query.query(nameTBL, currentID, nameID);
-					System.out.println(result[1]);
 					while (result[1] == null) {
 						currentID++;
 						result = query.query(nameTBL, currentID, nameID);
