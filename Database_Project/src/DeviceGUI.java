@@ -40,7 +40,7 @@ public class DeviceGUI extends JFrame {
 	static private String nameTBL = "tbl_device";
 	static private String nameID = "device_ID";
 	static String[] result;
-	static String[] nameTxtF = { "devicename", "devicedesc", "unitprice" };
+	static String[] nameTxtF = { "devicename", "devicedesc", "devicetype_ID", "producer_ID", "unitprice" };
 	static int currentID = 1;
 	static int maxID;
 	static DeviceGUI frame;
@@ -56,7 +56,7 @@ public class DeviceGUI extends JFrame {
 					frame = new DeviceGUI();
 					frame.setVisible(true);
 					result = query.query(nameTBL, 1, nameID);
-					maxID = query.maxID(nameTBL, nameID);
+					maxID = query.getLastID(nameTBL, nameID);
 					insertValues(result);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -156,9 +156,9 @@ public class DeviceGUI extends JFrame {
 		btn_D_forward.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				currentID++;
-				if (currentID > 0 && currentID <= maxID) {
+				if (currentID > 1 && currentID <= maxID) {
 					result = query.query(nameTBL, currentID, nameID);
-					while (result[1] == null) {
+					while (result[1] == null && currentID <= maxID) {
 						currentID++;
 						result = query.query(nameTBL, currentID, nameID);
 					}
@@ -172,9 +172,14 @@ public class DeviceGUI extends JFrame {
 		JButton btn_D_last = new JButton(">>");
 		btn_D_last.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				maxID = query.maxID(nameTBL, nameID);
+				int lastID = query.getLastID(nameTBL, nameID);
 				currentID = maxID;
-				result = query.query(nameTBL, maxID, nameID);
+				System.out.println(maxID);
+				result = query.query(nameTBL, lastID, nameID);
+				while (result[1] == null) {
+					currentID++;
+					result = query.query(nameTBL, currentID, nameID);
+				}
 				insertValues(result);
 			}
 		});
@@ -201,7 +206,7 @@ public class DeviceGUI extends JFrame {
 				newValues[1] = "" + txt_D_desc.getText();
 				newValues[2] = "" + txt_D_price.getText();
 				insert.insert(nameTBL, nameTxtF, newValues);
-				update.updateFK(nameTBL, devicetFK, cbx_device.getSelectedIndex(), "device_ID", currentID);
+				update.updateFK(nameTBL, devicetFK, cbx_device.getSelectedIndex(), "devicetype_ID", currentID);
 				update.updateFK(nameTBL, producerFK, cbx_producer.getSelectedIndex(), "producer_ID", currentID);
 				maxID = query.maxID(nameTBL, nameID);
 			}

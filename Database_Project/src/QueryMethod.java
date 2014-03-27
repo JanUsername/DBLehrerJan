@@ -30,8 +30,7 @@ public class QueryMethod {
 		String[] result = null;
 		try {
 			String stm = null;
-			stm = "select * from " + table + " WHERE " + nameID + "=" + ID
-					+ " order by " + nameID;
+			stm = "select * from " + table + " WHERE " + nameID + " = " + ID;
 			con = DriverManager.getConnection(url, user, password);
 			pst = con.prepareStatement(stm);
 			rs = pst.executeQuery();
@@ -118,6 +117,40 @@ public class QueryMethod {
 			rs.last();
 			rs.getInt(1);
 			n = rs.getInt(1);
+		} catch (SQLException ex) {
+			Logger lgr = Logger.getLogger(QueryMethod.class.getName());
+			lgr.log(Level.SEVERE, ex.getMessage(), ex);
+
+		} finally {
+
+			try {
+				if (pst != null) {
+					pst.close();
+				}
+				if (con != null) {
+					con.close();
+				}
+
+			} catch (SQLException ex) {
+				Logger lgr = Logger.getLogger(QueryMethod.class.getName());
+				lgr.log(Level.SEVERE, ex.getMessage(), ex);
+			}
+
+		}
+		return n;
+	}
+	public int getLastID(String table, String nameID){
+		int n = 0;
+		try {
+			con = DriverManager.getConnection(url, user, password);
+			Statement stmt;
+			stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
+			ResultSet rs = stmt.executeQuery("select * from " + table + " order by " + nameID);
+			rs.last();
+			rs.getInt(1);
+			n = rs.getInt(1);
+			System.out.println(n);
 		} catch (SQLException ex) {
 			Logger lgr = Logger.getLogger(QueryMethod.class.getName());
 			lgr.log(Level.SEVERE, ex.getMessage(), ex);
