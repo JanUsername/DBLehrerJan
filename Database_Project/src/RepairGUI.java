@@ -8,10 +8,14 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
+import javax.swing.WindowConstants;
 
 import java.awt.Font;
 
 import javax.swing.JComboBox;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class RepairGUI extends JFrame {
 
@@ -35,7 +39,7 @@ public class RepairGUI extends JFrame {
 	static private String nameTBL = "tbl_repair";
 	static private String nameID = "repair_ID";
 	static String[] result;
-	static String[] nameTxtF = { "errordescription" };
+	static String[] nameTxtF = { "errordescription" , "errortype_ID" , "employee_ID" , "orderdetails_ID" };
 	static int currentID = 1;
 	static int maxID;
 	static RepairGUI frame;
@@ -51,7 +55,7 @@ public class RepairGUI extends JFrame {
 					frame = new RepairGUI();
 					frame.setVisible(true);
 					result = query.query(nameTBL, 1, nameID);
-					maxID = query.maxID(nameTBL, nameID);
+					maxID = query.getLastID(nameTBL, nameID);
 					insertValues(result);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -90,18 +94,60 @@ public class RepairGUI extends JFrame {
 		panel.add(label_4);
 
 		JButton btn_R_first = new JButton("<<");
+		btn_R_first.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				result = query.query(nameTBL, 1, nameID);
+				insertValues(result);
+				currentID = 1;
+			}
+		});
 		btn_R_first.setBounds(12, 274, 54, 25);
 		panel.add(btn_R_first);
 
 		JButton btn_R_back = new JButton("<");
+		btn_R_back.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (currentID > 1) {
+					currentID--;
+					result = query.query(nameTBL, currentID, nameID);
+					while (result[1] == null) {
+						currentID--;
+						result = query.query(nameTBL, currentID, nameID);
+					}
+					insertValues(result);
+				}
+			}
+		});
 		btn_R_back.setBounds(66, 274, 54, 25);
 		panel.add(btn_R_back);
 
 		JButton btn_R_forward = new JButton(">");
+		btn_R_forward.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				currentID++;
+				if (currentID > 1 && currentID <= maxID) {
+					result = query.query(nameTBL, currentID, nameID);
+					while (result[1] == null && currentID <= maxID) {
+						currentID++;
+						result = query.query(nameTBL, currentID, nameID);
+					}
+					insertValues(result);
+				}
+			}
+		});
 		btn_R_forward.setBounds(118, 274, 54, 25);
 		panel.add(btn_R_forward);
 
 		JButton btn_R_last = new JButton(">>");
+		btn_R_last.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				while (currentID<maxID) {
+					currentID++;
+				}
+				result = query.query(nameTBL, currentID, nameID);
+				insertValues(result);
+			}
+		});
 		btn_R_last.setBounds(173, 274, 54, 25);
 		panel.add(btn_R_last);
 
@@ -166,6 +212,28 @@ public class RepairGUI extends JFrame {
 		txt_R_spec = new JTextArea();
 		txt_R_spec.setBounds(171, 39, 265, 68);
 		panel.add(txt_R_spec);
+		
+		JButton btnErrorType = new JButton("Error Type");
+		btnErrorType.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ErrorTypeGUI eGui = new ErrorTypeGUI();
+				eGui.openErrorTypeGUI();
+				frame.revalidate();
+				frame.repaint();
+			}
+		});
+		btnErrorType.setBounds(37, 327, 117, 25);
+		panel.add(btnErrorType);
+		
+		JButton btnEmployee = new JButton("Employee");
+		btnEmployee.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				EmployeeGUI emGui = new EmployeeGUI();
+				emGui.openEmployeeGUI();
+			}
+		});
+		btnEmployee.setBounds(185, 327, 117, 25);
+		panel.add(btnEmployee);
 	}
 	public static void insertValues(String[] values) {
 		String errorTypeResult[] = query.query(errorTypeTBL, Integer.parseInt(values[2]),

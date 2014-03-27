@@ -2,13 +2,18 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+
 import java.awt.Font;
+
 import javax.swing.JTextField;
 import javax.swing.JButton;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
 import javax.swing.JTextArea;
 
 
@@ -29,17 +34,17 @@ public class ErrorTypeGUI extends JFrame {
 	static String[] nameTxtF = { "errorname", "description" };
 	static int currentID = 1;
 	static int maxID;
-	static ErrorTypeGUI frame;
+	static ErrorTypeGUI frameETGui;
 	String[] newValues = new String[3];
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public void openErrorTypeGUI() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					frame = new ErrorTypeGUI();
-					frame.setVisible(true);
+					frameETGui = new ErrorTypeGUI();
+					frameETGui.setVisible(true);
 					result = query.query(nameTBL, 1, nameID);
 					maxID = query.maxID(nameTBL, nameID);
 					insertValues(result);
@@ -154,9 +159,9 @@ public class ErrorTypeGUI extends JFrame {
 		btn_ET_new.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				currentID = maxID + 1;
-				frame.txt_ET_name.setText("");
-				frame.txt_ET_name.requestFocusInWindow();
-				frame.txt_ET_desc.setText("");
+				frameETGui.txt_ET_name.setText("");
+				frameETGui.txt_ET_name.requestFocusInWindow();
+				frameETGui.txt_ET_desc.setText("");
 			}
 		});
 		btn_ET_new.setBounds(241, 201, 70, 25);
@@ -182,12 +187,12 @@ public class ErrorTypeGUI extends JFrame {
 		});
 		btn_ET_del.setBounds(379, 201, 70, 25);
 		panel.add(btn_ET_del);
-		
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		
 	}
 	public static void insertValues(String[] values) {
-		frame.txt_ET_name.setText(values[1]);
+		frameETGui.txt_ET_name.setText(values[1]);
 		//System.out.println(values[2]);
-		frame.txt_ET_desc.setText(values[2]);
+		frameETGui.txt_ET_desc.setText(values[2]);
 	}
 }

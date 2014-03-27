@@ -30,7 +30,7 @@ public class QueryMethod {
 		String[] result = null;
 		try {
 			String stm = null;
-			stm = "select * from " + table + " WHERE " + nameID + " = " + ID;
+			stm = "select * from " + table + " WHERE " + nameID + " = " + ID + " order by " +nameID;
 			con = DriverManager.getConnection(url, user, password);
 			pst = con.prepareStatement(stm);
 			rs = pst.executeQuery();
@@ -150,7 +150,6 @@ public class QueryMethod {
 			rs.last();
 			rs.getInt(1);
 			n = rs.getInt(1);
-			System.out.println(n);
 		} catch (SQLException ex) {
 			Logger lgr = Logger.getLogger(QueryMethod.class.getName());
 			lgr.log(Level.SEVERE, ex.getMessage(), ex);

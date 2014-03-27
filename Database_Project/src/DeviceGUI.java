@@ -172,14 +172,10 @@ public class DeviceGUI extends JFrame {
 		JButton btn_D_last = new JButton(">>");
 		btn_D_last.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int lastID = query.getLastID(nameTBL, nameID);
-				currentID = maxID;
-				System.out.println(maxID);
-				result = query.query(nameTBL, lastID, nameID);
-				while (result[1] == null) {
+				while (currentID<maxID) {
 					currentID++;
-					result = query.query(nameTBL, currentID, nameID);
 				}
+				result = query.query(nameTBL, currentID, nameID);
 				insertValues(result);
 			}
 		});

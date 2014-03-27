@@ -7,6 +7,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.WindowConstants;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -29,18 +31,18 @@ public class EmployeeGUI extends JFrame {
 	static String[] nameTxtF = { "name", "surname", "Specialization" };
 	static int currentID = 1;
 	static int maxID;
-	static EmployeeGUI frame;
+	static EmployeeGUI frameEGui;
 	String[] newValues = new String[3];
 	
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public void openEmployeeGUI() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					frame = new EmployeeGUI();
-					frame.setVisible(true);
+					frameEGui = new EmployeeGUI();
+					frameEGui.setVisible(true);
 					result = query.query(nameTBL, 1, nameID);
 					maxID = query.maxID(nameTBL, nameID);
 					insertValues(result);
@@ -174,10 +176,10 @@ public class EmployeeGUI extends JFrame {
 		btn_E_new.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				currentID = maxID + 1;
-				frame.txt_E_name.setText("");
-				frame.txt_E_name.requestFocusInWindow();
-				frame.txt_E_surname.setText("");
-				frame.txt_E_spec.setText("");
+				frameEGui.txt_E_name.setText("");
+				frameEGui.txt_E_name.requestFocusInWindow();
+				frameEGui.txt_E_surname.setText("");
+				frameEGui.txt_E_spec.setText("");
 			}
 		});
 		btn_E_new.setBounds(228, 185, 70, 25);
@@ -204,10 +206,11 @@ public class EmployeeGUI extends JFrame {
 		});
 		btn_E_del.setBounds(366, 185, 70, 25);
 		panel.add(btn_E_del);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	}
 	public static void insertValues(String[] values) {
-		frame.txt_E_name.setText(values[1]);
-		frame.txt_E_surname.setText(values[2]);
-		frame.txt_E_spec.setText(values[3]);
+		frameEGui.txt_E_name.setText(values[1]);
+		frameEGui.txt_E_surname.setText(values[2]);
+		frameEGui.txt_E_spec.setText(values[3]);
 	}
 }
