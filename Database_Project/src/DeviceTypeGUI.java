@@ -7,6 +7,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.WindowConstants;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -28,20 +30,21 @@ public class DeviceTypeGUI extends JFrame {
 	static String[] nameTxtF = { "name", "description" };
 	static int currentID = 1;
 	static int maxID;
-	static DeviceTypeGUI frame;
-	String[] newValues = new String[3];
+	static DeviceTypeGUI frameDeviceGUI;
+	String[] newValues = new String[2];
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public void openDeviceTypeGUI(){
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					frame = new DeviceTypeGUI();
-					frame.setVisible(true);
+					frameDeviceGUI = new DeviceTypeGUI();
+					frameDeviceGUI.setVisible(true);
 					result = query.query(nameTBL, 1, nameID);
 					maxID = query.maxID(nameTBL, nameID);
 					insertValues(result);
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -158,9 +161,9 @@ public class DeviceTypeGUI extends JFrame {
 		btn_DT_new.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				currentID = maxID + 1;
-				frame.txt_DT_name.setText("");
-				frame.txt_DT_name.requestFocusInWindow();
-				frame.txt_DT_desc.setText("");
+				frameDeviceGUI.txt_DT_name.setText("");
+				frameDeviceGUI.txt_DT_name.requestFocusInWindow();
+				frameDeviceGUI.txt_DT_desc.setText("");
 			}
 		});
 		btn_DT_new.setBounds(246, 132, 70, 25);
@@ -186,9 +189,10 @@ public class DeviceTypeGUI extends JFrame {
 		});
 		btn_DT_del.setBounds(384, 132, 70, 25);
 		panel.add(btn_DT_del);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	}
 	public static void insertValues(String[] values) {
-		frame.txt_DT_name.setText(values[1]);
-		frame.txt_DT_desc.setText(values[2]);
+		frameDeviceGUI.txt_DT_name.setText(values[1]);
+		frameDeviceGUI.txt_DT_desc.setText(values[2]);
 	}
 }

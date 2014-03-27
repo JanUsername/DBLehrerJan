@@ -59,4 +59,39 @@ public class UpdateMethod {
 			}
 		}
 	}
+	public void updateFK(String table, String nameColumn, int valueColumn,
+			String nameID, int valueID) {
+
+		try {
+			con = DriverManager.getConnection(url, user, password);
+
+			String stm = null;
+
+			stm = "UPDATE " + table + " SET " + nameColumn + " = '" + valueColumn + "' WHERE "
+					+ nameID + " = " + valueID;
+			pst = con.prepareStatement(stm);
+
+			// execute statement me
+			pst.executeUpdate();
+
+		} catch (SQLException ex) {
+			Logger lgr = Logger.getLogger(UpdateMethod.class.getName());
+			lgr.log(Level.SEVERE, ex.getMessage(), ex);
+
+		} finally {
+
+			try {
+				if (pst != null) {
+					pst.close();
+				}
+				if (con != null) {
+					con.close();
+				}
+
+			} catch (SQLException ex) {
+				Logger lgr = Logger.getLogger(UpdateMethod.class.getName());
+				lgr.log(Level.SEVERE, ex.getMessage(), ex);
+			}
+		}
+	}
 }

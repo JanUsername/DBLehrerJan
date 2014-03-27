@@ -3,12 +3,16 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+
 import java.awt.Font;
+
 import javax.swing.JTextField;
 import javax.swing.JButton;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -31,17 +35,17 @@ public class ProducerGUI extends JFrame {
 	static String[] nameTxtF = { "name", "address", "location" };
 	static int currentID = 1;
 	static int maxID;
-	static ProducerGUI frame;
+	static ProducerGUI frameProdGui;
 	String[] newValues = new String[3];
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public void openProducerGUI() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					frame = new ProducerGUI();
-					frame.setVisible(true);
+					frameProdGui = new ProducerGUI();
+					frameProdGui.setVisible(true);
 					result = query.query(nameTBL, 1, nameID);
 					maxID = query.maxID(nameTBL, nameID);
 					insertValues(result);
@@ -178,10 +182,10 @@ public class ProducerGUI extends JFrame {
 		btn_P_new.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				currentID = maxID + 1;
-				frame.txt_P_name.setText("");
-				frame.txt_P_name.requestFocusInWindow();
-				frame.txt_P_loc.setText("");
-				frame.txt_P_address.setText("");
+				frameProdGui.txt_P_name.setText("");
+				frameProdGui.txt_P_name.requestFocusInWindow();
+				frameProdGui.txt_P_loc.setText("");
+				frameProdGui.txt_P_address.setText("");
 			}
 		});
 		btn_P_new.setBounds(243, 150, 70, 25);
@@ -208,12 +212,13 @@ public class ProducerGUI extends JFrame {
 		});
 		btn_P_del.setBounds(381, 150, 70, 25);
 		panel.add(btn_P_del);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	}
 
 	public static void insertValues(String[] values) {
-		frame.txt_P_name.setText(values[1]);
+		frameProdGui.txt_P_name.setText(values[1]);
 		System.out.println(values[1]);
-		frame.txt_P_address.setText(values[2]);
-		frame.txt_P_loc.setText(values[3]);
+		frameProdGui.txt_P_address.setText(values[2]);
+		frameProdGui.txt_P_loc.setText(values[3]);
 	}
 }

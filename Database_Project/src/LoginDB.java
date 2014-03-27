@@ -22,6 +22,7 @@ public class LoginDB {
     	DeleteMethod delete = new DeleteMethod();
     	//delete.delete("tbl_Customer", "customer_ID", 8);
     	QueryMethod query = new QueryMethod();
-    	query.query("tbl_Customer",1,"customer_ID");
+    	//query.query("tbl_Customer",1,"customer_ID");
+//    	query.queryColumn("tbl_Devicetype", "name");
     }
 }

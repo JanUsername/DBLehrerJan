@@ -114,9 +114,9 @@ public class QueryMethod {
 			Statement stmt;
 			stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
 					ResultSet.CONCUR_READ_ONLY);
-			ResultSet rs = stmt.executeQuery("select * from " + table
-					+ " order by " + nameID);
+			ResultSet rs = stmt.executeQuery("select count(*) from " + table);
 			rs.last();
+			rs.getInt(1);
 			n = rs.getInt(1);
 		} catch (SQLException ex) {
 			Logger lgr = Logger.getLogger(QueryMethod.class.getName());
