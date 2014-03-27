@@ -68,6 +68,45 @@ public class QueryMethod {
 		return result;
 	}
 
+	public String[] queryColumn(String table, String columnName, int n) {
+		String[] resultColumn = null;
+		try {
+			String stm = null;
+			stm = "select " + columnName + " from " + table;
+			con = DriverManager.getConnection(url, user, password);
+			pst = con.prepareStatement(stm);
+			rs = pst.executeQuery();
+
+			resultColumn = new String[n];
+			int j = 1;
+			while (rs.next()) {
+					resultColumn[j-1] = "" + rs.getString(1);
+					j++;
+			}
+
+		} catch (SQLException ex) {
+			Logger lgr = Logger.getLogger(QueryMethod.class.getName());
+			lgr.log(Level.SEVERE, ex.getMessage(), ex);
+
+		} finally {
+
+			try {
+				if (pst != null) {
+					pst.close();
+				}
+				if (con != null) {
+					con.close();
+				}
+
+			} catch (SQLException ex) {
+				Logger lgr = Logger.getLogger(QueryMethod.class.getName());
+				lgr.log(Level.SEVERE, ex.getMessage(), ex);
+			}
+
+		}
+		return resultColumn;
+	}
+
 	public int maxID(String table, String nameID) {
 		int n = 0;
 		try {
