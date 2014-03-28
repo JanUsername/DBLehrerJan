@@ -48,7 +48,7 @@ public class RepairGUI extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public void startRepairGUI() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -68,7 +68,7 @@ public class RepairGUI extends JFrame {
 	 * Create the frame.
 	 */
 	public RepairGUI() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		setBounds(100, 100, 537, 393);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -218,8 +218,6 @@ public class RepairGUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				ErrorTypeGUI eGui = new ErrorTypeGUI();
 				eGui.openErrorTypeGUI();
-				frame.revalidate();
-				frame.repaint();
 			}
 		});
 		btnErrorType.setBounds(37, 327, 117, 25);
@@ -234,6 +232,7 @@ public class RepairGUI extends JFrame {
 		});
 		btnEmployee.setBounds(185, 327, 117, 25);
 		panel.add(btnEmployee);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	}
 	public static void insertValues(String[] values) {
 		String errorTypeResult[] = query.query(errorTypeTBL, Integer.parseInt(values[2]),

@@ -3,6 +3,7 @@ import java.awt.EventQueue;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 
@@ -16,6 +17,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JTextArea;
 import javax.swing.JComboBox;
+
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 
@@ -49,7 +51,7 @@ public class DeviceGUI extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public void startDeviceGUI() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -278,7 +280,7 @@ public class DeviceGUI extends JFrame {
 		});
 		btnNewProducer.setBounds(199, 336, 169, 25);
 		panel.add(btnNewProducer);
-		
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	}
 
 	public static void insertValues(String[] values) {

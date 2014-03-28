@@ -5,43 +5,55 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTabbedPane;
+
 import java.awt.GridLayout;
+
 import javax.swing.JLabel;
+
 import java.awt.Font;
+
 import javax.swing.JButton;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextArea;
 import javax.swing.JComboBox;
 import javax.swing.ComboBoxModel;
+import javax.swing.JTextField;
 
 
 public class DatabaseMainGUI extends JFrame {
 
-	private JPanel contentPane;
-	private JTextArea txt_R_spec;
-	private static JComboBox cbx_R_errortype;
-	private static JComboBox cbx_R_employee;
-	private static JComboBox cbx_R_order;
-	private static String errorTypeTBL = "tbl_errortype";
-	private static String employeeTBL = "tbl_employee";
-	private static String orderTBL = "tbl_orderdetails";
-
+	private JPanel contentPaneOrder;
+	static private JPanel contentPanelRepair;
+	static private JPanel contentPanelDevice;
+	private static JComboBox cbx_O_device;
+	private static JComboBox cbx_O_customer;
+	private JTextField txt_O_dateOrder;
+	private JTextField txt_O_dateDeliver;
+	private JTextField txt_O_quantity;
+	
 	static QueryMethod query = new QueryMethod();
 	static InsertMethod insert = new InsertMethod();
 	static DeleteMethod delete = new DeleteMethod();
 	static UpdateMethod update = new UpdateMethod();
 
-	static private String errorTypeFK = "errortype_ID";
-	static private String employeeFK = "employee_ID";
-	static private String orderFK = "orderdetails_ID";
-	static private String nameTBL = "tbl_repair";
-	static private String nameID = "repair_ID";
+	static private String customerFK = "customer_ID";
+	static private String CustomerTBL= "tbl_customer";
+	static private String deviceFK = "employee_ID";
+	static private String orderDFK = "orderdetails_ID";
+	static private String orderDTBL = "tbl_orderdetails";
+	static private String nameTBL1 = "tbl_orderDetails";
+	static private String nameTBL2 = "tbl_order";
+	static private String nameID1 = "orderdetails_ID";
+	static private String nameID2 = "order_ID";
 	static String[] result;
-	static String[] nameTxtF = { "errordescription" , "errortype_ID" , "employee_ID" , "orderdetails_ID" };
+	static String[] nameTxtF = { "dateoforder" , "dateofdelivery" , "customer_ID" , "orderdetails_ID" };
 	static int currentID = 1;
 	static int maxID;
-	static JPanel frameR;
+	static DatabaseMainGUI frame;
 	String[] newValues = new String[1];
 	
 	/**
@@ -51,10 +63,10 @@ public class DatabaseMainGUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					DatabaseMainGUI frame = new DatabaseMainGUI();
+					frame = new DatabaseMainGUI();
 					frame.setVisible(true);
-					result = query.query(nameTBL, 1, nameID);
-					maxID = query.getLastID(nameTBL, nameID);
+					result = query.query(nameTBL2, 1, nameID2);
+					maxID = query.getLastID(nameTBL2, nameID2);
 					insertValues(result);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -80,164 +92,139 @@ public class DatabaseMainGUI extends JFrame {
 		
 		JLabel lbl_T1_Title = new JLabel("Order");
 		lbl_T1_Title.setFont(new Font("Dialog", Font.BOLD, 16));
-		lbl_T1_Title.setBounds(12, 12, 151, 15);
+		lbl_T1_Title.setBounds(232, 12, 151, 15);
 		panel.add(lbl_T1_Title);
 		
-		JLabel Order_ID = new JLabel("Order ID");
-		Order_ID.setBounds(12, 39, 70, 15);
-		panel.add(Order_ID);
-		
 		JLabel dateoforder = new JLabel("Date of Order");
-		dateoforder.setBounds(12, 66, 121, 15);
+		dateoforder.setBounds(12, 39, 121, 15);
 		panel.add(dateoforder);
 		
 		JLabel dateofdelivery = new JLabel("Date of Delivery");
-		dateofdelivery.setBounds(12, 93, 121, 15);
+		dateofdelivery.setBounds(12, 66, 121, 15);
 		panel.add(dateofdelivery);
 		
 		JLabel quantity = new JLabel("Quantity");
-		quantity.setBounds(12, 120, 70, 15);
+		quantity.setBounds(12, 93, 70, 15);
 		panel.add(quantity);
 		
 		JLabel device_ID = new JLabel("Device");
-		device_ID.setBounds(12, 147, 70, 15);
+		device_ID.setBounds(12, 120, 70, 15);
 		panel.add(device_ID);
 		
 		JLabel customer_ID = new JLabel("Customer");
-		customer_ID.setBounds(12, 174, 70, 15);
+		customer_ID.setBounds(12, 147, 70, 15);
 		panel.add(customer_ID);
 		
 		JButton btnAddCustomer = new JButton("Add Customer");
+		btnAddCustomer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CustomerGUI custGui = new CustomerGUI();
+				custGui.startCostumerGUI();
+			}
+		});
 		btnAddCustomer.setBounds(406, 323, 142, 25);
 		panel.add(btnAddCustomer);
 		
-		JButton button = new JButton("<<");
-		button.setBounds(12, 212, 54, 25);
-		panel.add(button);
+		JButton btn_O_first = new JButton("<<");
+		btn_O_first.setBounds(12, 224, 54, 25);
+		panel.add(btn_O_first);
 		
-		JButton button_1 = new JButton("<");
-		button_1.addActionListener(new ActionListener() {
+		JButton btn_O_back = new JButton("<");
+		btn_O_back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		button_1.setBounds(66, 212, 54, 25);
-		panel.add(button_1);
+		btn_O_back.setBounds(66, 224, 54, 25);
+		panel.add(btn_O_back);
 		
-		JButton button_2 = new JButton(">");
-		button_2.setBounds(118, 212, 54, 25);
-		panel.add(button_2);
+		JButton btn_O_forward = new JButton(">");
+		btn_O_forward.setBounds(118, 224, 54, 25);
+		panel.add(btn_O_forward);
 		
-		JButton button_3 = new JButton(">>");
-		button_3.setBounds(173, 212, 54, 25);
-		panel.add(button_3);
+		JButton btn_O_last = new JButton(">>");
+		btn_O_last.setBounds(173, 224, 54, 25);
+		panel.add(btn_O_last);
 		
-		JButton btnNew = new JButton("New");
-		btnNew.setBounds(232, 212, 70, 25);
-		panel.add(btnNew);
+		JButton btn_O_new = new JButton("New");
+		btn_O_new.setBounds(232, 224, 70, 25);
+		panel.add(btn_O_new);
 		
-		JButton btnDel = new JButton("Del");
-		btnDel.setBounds(305, 212, 70, 25);
-		panel.add(btnDel);
+		JButton btn_O_del = new JButton("Del");
+		btn_O_del.setBounds(305, 224, 70, 25);
+		panel.add(btn_O_del);
 		
-		JPanel panel_2 = new JPanel();
-		tabbedPane.addTab("New tab", null, panel_2, null);
+		JButton btnRepair = new JButton("Repair");
+		btnRepair.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RepairGUI repGui = new RepairGUI();
+				repGui.startRepairGUI();
+			}
+		});
+		btnRepair.setBounds(252, 323, 142, 25);
+		panel.add(btnRepair);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setLayout(null);
-		tabbedPane.addTab("Repair", null, panel_1, null);
+		JButton btnDevice = new JButton("device");
+		btnDevice.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DeviceGUI devGui = new DeviceGUI();
+				devGui.startDeviceGUI();
+			}
+		});
+		btnDevice.setBounds(98, 323, 142, 25);
+		panel.add(btnDevice);
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setBounds(56, 154, 1, 15);
-		panel_1.add(textArea);
+		txt_O_dateOrder = new JTextField();
+		txt_O_dateOrder.setBounds(172, 37, 203, 19);
+		panel.add(txt_O_dateOrder);
+		txt_O_dateOrder.setColumns(10);
 		
-		JTextArea textArea_1 = new JTextArea();
-		textArea_1.setBounds(56, 154, 1, 15);
-		panel_1.add(textArea_1);
+		txt_O_dateDeliver = new JTextField();
+		txt_O_dateDeliver.setColumns(10);
+		txt_O_dateDeliver.setBounds(172, 64, 203, 19);
+		panel.add(txt_O_dateDeliver);
 		
-		JLabel label = new JLabel("Repair");
-		label.setFont(new Font("Dialog", Font.BOLD, 16));
-		label.setBounds(239, 12, 70, 15);
-		panel_1.add(label);
+		txt_O_quantity = new JTextField();
+		txt_O_quantity.setBounds(173, 91, 202, 19);
+		panel.add(txt_O_quantity);
+		txt_O_quantity.setColumns(10);
 		
-		JButton button_4 = new JButton("<<");
-		button_4.setBounds(12, 274, 54, 25);
-		panel_1.add(button_4);
 		
-		JButton button_5 = new JButton("<");
-		button_5.setBounds(66, 274, 54, 25);
-		panel_1.add(button_5);
+		int lengthOrder = query.maxID(orderDTBL, "orderdetails_ID");
+		String[] cbx_R_valuesOrd = new String[lengthOrder];
 		
-		JButton button_6 = new JButton(">");
-		button_6.setBounds(118, 274, 54, 25);
-		panel_1.add(button_6);
+		cbx_R_valuesOrd = query.queryColumn(orderDTBL, "orderdetails_ID", lengthOrder);
+		DefaultComboBoxModel<String> modelOrd = new DefaultComboBoxModel(cbx_R_valuesOrd);
+				
+		cbx_O_device = new JComboBox(modelOrd);
+		cbx_O_device.setBounds(173, 115, 202, 24);
+		panel.add(cbx_O_device);
 		
-		JButton button_7 = new JButton(">>");
-		button_7.setBounds(173, 274, 54, 25);
-		panel_1.add(button_7);
+		int lengthCustomer = query.maxID(CustomerTBL, "customer_ID");
+		String[] cbx_R_valuesCus = new String[lengthCustomer];
 		
-		JButton button_8 = new JButton("New");
-		button_8.setBounds(228, 274, 70, 25);
-		panel_1.add(button_8);
-		
-		JButton button_9 = new JButton("Save");
-		button_9.setBounds(296, 274, 68, 25);
-		panel_1.add(button_9);
-		
-		JButton button_10 = new JButton("Del");
-		button_10.setBounds(366, 274, 70, 25);
-		panel_1.add(button_10);
-		
-		JLabel label_1 = new JLabel("Error Description");
-		label_1.setBounds(28, 52, 126, 15);
-		panel_1.add(label_1);
-		
-		JLabel label_2 = new JLabel("Error Type:");
-		label_2.setBounds(28, 127, 126, 15);
-		panel_1.add(label_2);
-		
-		JComboBox comboBox = new JComboBox((ComboBoxModel) null);
-		comboBox.setBounds(185, 122, 251, 20);
-		panel_1.add(comboBox);
-		
-		JComboBox comboBox_1 = new JComboBox((ComboBoxModel) null);
-		comboBox_1.setBounds(185, 154, 251, 20);
-		panel_1.add(comboBox_1);
-		
-		JLabel label_3 = new JLabel("Employee:");
-		label_3.setBounds(28, 154, 126, 15);
-		panel_1.add(label_3);
-		
-		JComboBox comboBox_2 = new JComboBox((ComboBoxModel) null);
-		comboBox_2.setBounds(185, 181, 251, 20);
-		panel_1.add(comboBox_2);
-		
-		JLabel label_4 = new JLabel("Order Details:");
-		label_4.setBounds(28, 186, 126, 15);
-		panel_1.add(label_4);
-		
-		JTextArea textArea_2 = new JTextArea();
-		textArea_2.setBounds(171, 39, 265, 68);
-		panel_1.add(textArea_2);
-		
-		JButton button_11 = new JButton("Error Type");
-		button_11.setBounds(37, 327, 117, 25);
-		panel_1.add(button_11);
-		
-		JButton button_12 = new JButton("Employee");
-		button_12.setBounds(185, 327, 117, 25);
-		panel_1.add(button_12);
+		cbx_R_valuesCus = query.queryColumn(CustomerTBL, "surname", lengthCustomer);
+		DefaultComboBoxModel<String> modelCus = new DefaultComboBoxModel(cbx_R_valuesCus);
+				
+		cbx_O_customer = new JComboBox(modelCus);
+		cbx_O_customer.setBounds(173, 142, 203, 24);
+		panel.add(cbx_O_customer);
 	}
 	public static void insertValues(String[] values) {
-		String errorTypeResult[] = query.query(errorTypeTBL, Integer.parseInt(values[2]),
-				"errorType_ID");
-		String employeeResult[] = query.query(employeeTBL,
-				Integer.parseInt(values[3]), "employee_ID");
-		String orderResult[] = query.query(orderTBL,
+		String customerResult[] = query.query(CustomerTBL, Integer.parseInt(values[3]),
+				"customer_ID");
+//		String deviceResult[] = query.query(deviceFK,Integer.parseInt(values[3]), "employee_ID");
+		String orderDResult[] = query.query(orderDTBL,
 				Integer.parseInt(values[4]), "orderdetails_ID");
 		
-		frameR.txt_R_spec.setText(values[1]);
-		cbx_R_errortype.setSelectedIndex(Integer.parseInt(errorTypeResult[0])-1);
-		cbx_R_employee.setSelectedIndex(Integer.parseInt(employeeResult[0])-1);
-		cbx_R_order.setSelectedIndex(Integer.parseInt(orderResult[0])-1);
+		frame.txt_O_dateOrder.setText(values[1]);
+		frame.txt_O_dateDeliver.setText(values[2]);
+		cbx_O_customer.setSelectedIndex(Integer.parseInt(customerResult[0])-1);
+		cbx_O_device.setSelectedIndex(Integer.parseInt(orderDResult[0])-1);
+//		cbx_R_order.setSelectedIndex(Integer.parseInt(orderResult[0])-1);
 	}
 }
+
+
+//static private String customerFK = "errortype_ID";
+//static private String deviceFK = "employee_ID";
+//static private String orderDFK = "orderdetails_ID";

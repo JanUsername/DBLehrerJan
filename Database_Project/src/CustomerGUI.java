@@ -3,6 +3,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -11,6 +12,7 @@ import java.awt.Font;
 
 import javax.swing.JButton;
 import javax.swing.JTextField;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
@@ -42,7 +44,7 @@ public class CustomerGUI extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public void startCostumerGUI() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -50,7 +52,6 @@ public class CustomerGUI extends JFrame {
 					frame.setVisible(true);
 					result = query.query(nameTBL, 1, nameID);
 					maxID = query.maxID(nameTBL, nameID);
-					//System.out.println(maxID);
 					insertValues(result);
 
 				} catch (Exception e) {
@@ -271,6 +272,7 @@ public class CustomerGUI extends JFrame {
 			}
 		});
 		btnSave.setBounds(296, 247, 68, 25);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	}
 
 	public static void insertValues(String[] values) {
